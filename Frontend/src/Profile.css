@@ -1,0 +1,41 @@
+/* Wrapper centers the card horizontally and vertically */
+.profile-card-wrapper {
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  background-color: #ecf0f1;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* The card itself */
+.profile-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  width: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: left;
+}
+
+.profile-card-title {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.profile-card-item {
+  margin: 12px 0;
+  font-size: 16px;
+  color: #34495e;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-card-item strong {
+  color: #2980b9;
+}

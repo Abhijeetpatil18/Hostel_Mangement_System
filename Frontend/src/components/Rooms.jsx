@@ -18,7 +18,10 @@ function Rooms() {
     fetchRooms();
   }, []);
 
-  const handleDetails = (room) => setOpenRoom(room);
+  const handleDetails = (room) => {
+    setOpenRoom(room);
+  };
+
   const close = () => setOpenRoom(null);
 
   return (
@@ -26,35 +29,35 @@ function Rooms() {
       <div className="max-w-6xl mx-auto px-4" style={{ width: "900px" }}>
         <div className="bg-slate-200 border border-slate-200 rounded-xl shadow-sm overflow-hidden">
           <div className="px-4 py-3 border-b border-slate-200">
-            <h2 className="text-center underline font-semibold text-slate-900">
+            <h2 className="text-center underline font-semibold text-black border-0">
               Rooms
             </h2>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full table-auto text-left">
-              <thead className="bg-slate-200">
+          <div className="overflow-x-auto ">
+            <table className="min-w-full table-auto text-left border-1">
+              <thead className="bg-slate-300">
                 <tr>
-                  <th className="sticky top-0 z-10 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                  <th className="sticky top-0 z-10 px-4 py-3 text-md font-semibold uppercase tracking-wide text-black">
                     Room
                   </th>
-                  <th className="sticky top-0 z-10 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                  <th className="sticky top-0 z-10 px-4 py-3 text-md font-semibold uppercase tracking-wide text-black">
                     Capacity
                   </th>
-                  <th className="sticky top-0 z-10 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                  <th className="sticky top-0 z-10 px-4 py-3 text-md font-semibold uppercase tracking-wide text-black">
                     Status
                   </th>
-                  <th className="sticky top-0 z-10 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600 text-right">
+                  <th className="sticky top-0 z-10 px-4 py-3 text-md font-semibold uppercase tracking-wide text-black text-right">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
                 {rooms.map((r) => (
-                  <tr key={r.room_id} className="hover:bg-slate-50">
+                  <tr key={r.room_id} className="hover:bg-black/10 border-1">
                     <td className="px-4 py-3">
-                      <span className="text-slate-900 font-medium">
-                        {r.room_number}
+                      <span className="text-black font-medium">
+                        {r.room_id}
                       </span>
                     </td>
                     <td className="px-4 py-3">
@@ -63,7 +66,7 @@ function Rooms() {
                     <td className="px-4 py-3">
                       <span
                         className={
-                          "inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium border " +
+                          "inline-flex items-center gap-1 rounded-full px-2 py-1 text-md font-medium border " +
                           (r.status === "Available"
                             ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                             : r.status === "Occupied"
@@ -110,40 +113,39 @@ function Rooms() {
 
 export function RoomDetailsModal({ room, onClose }) {
   const dialogRef = useRef(null);
-  const [students, setStudents] = useState([]);
+  const [details, setDetails] = useState({
+    room_id: "",
+    capacity: "",
+    students: [],
+  });
 
-  // fetch students for this room (adjust API to your backend)
   useEffect(() => {
     let active = true;
     (async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/rooms/${room.room_id}/students`
+          `http://localhost:5000/api/rooms/${room.room_id}`
         );
-        if (active) setStudents(data || []);
+        if (active) {
+          // expected shape:
+          // { room_id, capacity, students: [ { id, name, ... } ] }
+          setDetails({
+            room_id: data.room_id,
+            capacity: data.capacity,
+            students: data.students || [],
+          });
+        }
       } catch (e) {
-        if (active) setStudents([]);
+        if (active) {
+          setDetails((prev) => ({ ...prev, students: [] }));
+        }
+        console.error(e);
       }
     })();
     return () => {
       active = false;
     };
   }, [room.room_id]);
-
-  // a11y: focus, esc to close
-  useEffect(() => {
-    const prev = document.activeElement;
-    const onKey = (e) => e.key === "Escape" && onClose();
-    document.addEventListener("keydown", onKey);
-    setTimeout(
-      () => dialogRef.current?.querySelector("[data-autofocus]")?.focus(),
-      0
-    );
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      prev?.focus();
-    };
-  }, [onClose]);
 
   const onBackdrop = (e) => {
     if (e.target === e.currentTarget) onClose();
@@ -160,71 +162,51 @@ export function RoomDetailsModal({ room, onClose }) {
         aria-modal="true"
         aria-labelledby="room-title"
         aria-describedby="room-desc"
-        className="w-full max-w-2xl h-auto max-h-[50vh] overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/5"
+        className="w-full max-w-xl h-auto max-h-[50vh] overflow-hidden rounded-2xl bg-slate-200 shadow-xl ring-1 ring-black/5"
       >
-        <header className="flex items-start justify-between p-5 border-b">
-          <div>
+        <header className="flex items-start justify-between p-5 border-b bg-slate-200">
+          <div className="w-full">
             <h2
               id="room-title"
-              className="text-xl font-semibold text-slate-900"
+              className="text-lg font-semibold text-slate-900 mb-2"
             >
-              Room {room.room_number}
+              Room Details
             </h2>
-            <p id="room-desc" className="text-sm text-slate-600">
-              Capacity {room.capacity} • Status {room.status}
+            <p id="room-desc" className="text-sm text-slate-700 mb-4">
+              Room information and allocated students
             </p>
+
+            <div className="mb-4">
+              <p className="text-sm text-slate-900">
+                <span className="font-semibold">Room ID:</span>{" "}
+                {details.room_id}
+              </p>
+              <p className="text-sm text-slate-900">
+                <span className="font-semibold">Capacity:</span>{" "}
+                {details.capacity}
+              </p>
+            </div>
+
+            <div>
+              <p className="font-semibold text-sm text-slate-900 mb-1">
+                Students:
+              </p>
+              {details.students && details.students.length > 0 ? (
+                <ul className="list-disc list-inside text-sm text-slate-900">
+                  {details.students.map((student) => (
+                    <li key={student.id || student.student_id || student.name}>
+                      {student.name}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-slate-700">
+                  No students in this room.
+                </p>
+              )}
+            </div>
           </div>
-          <button
-            className="rounded-md p-2 text-slate-600 hover:bg-slate-100"
-            onClick={onClose}
-            aria-label="Close"
-            data-autofocus
-          >
-            ✕
-          </button>
         </header>
-
-        {/* Make only the body scrollable so header/footer remain fixed */}
-        <div className="px-5 py-4 overflow-y-auto max-h-[calc(50vh-120px)]">
-          {students.length ? (
-            <ul className="space-y-3">
-              {students.map((s) => (
-                <li
-                  key={s.id || s.student_id}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="h-9 w-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-700 font-semibold">
-                      {(s.name || "?").slice(0, 1).toUpperCase()}
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-slate-900 font-medium truncate">
-                        {s.name}
-                      </div>
-                      <div className="text-xs text-slate-600 truncate">
-                        Course {s.course || "—"}
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-xs text-slate-500">
-                    {s.phone || ""}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-slate-600">No students allocated.</p>
-          )}
-        </div>
-
-        <footer className="flex justify-end gap-3 p-5 border-t">
-          <button
-            className="rounded-md px-4 py-2 text-slate-700 hover:bg-slate-100"
-            onClick={onClose}
-          >
-            Close
-          </button>
-        </footer>
       </section>
     </div>
   );

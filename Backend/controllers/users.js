@@ -1,14 +1,18 @@
 const db = require('../db.js');
+const jwt = require("jsonwebtoken")
+require('dotenv').config();
+
 
 // Ensure db is connected and has query method
 if (!db || typeof db.query !== 'function') {
-  console.error('❌ Database connection not properly initialized');
+  console.error(' Database connection not properly initialized');
   throw new Error('Database connection not properly initialized');
 }
 
 const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body || {};
+
     if (!email || !password) {
       return res.status(400).json({ success: false, message: "Email and password are required" });
     }
@@ -52,28 +56,20 @@ const userRegister =async (req, res) => {
     const uname = String(username).trim();
     const mail = String(email).trim().toLowerCase();
 
-    // 1) check duplicates by username OR email (ensure unique indexes in DB)
-    // const [exists] = await db.execute(
-    //   "SELECT id FROM users WHERE name = ? OR email = ? LIMIT 1",
-    //   [uname, mail]
-    // );
-    // if (exists.length) {
-    //   return res.status(409).json({ success: false, message: "User already exists" });
-    // }
+      var token = jwt.sign({ email: req.body.email }, process.env.SECRET);
 
-    // 2) TODO: hash password before storing (e.g., bcrypt.hash)
-    // const hashed = await bcrypt.hash(password, 10);
 
     // 3) insert user
     const [result] = await db.execute(
-      "INSERT INTO users (name, email, password) VALUES (?,?,?)",
-      [uname, mail, password] // replace with hashed
+      "INSERT INTO users (name, email, password, jwt_token) VALUES (?,?,?,?)",
+      [uname, mail, password,token] // replace with hashed
     );
 
     return res.status(201).json({
       success: true,
       message: "Registered",
       userId: result.insertId,
+      token : token
     });
   } catch (error) {
     console.error("Register error:", error);

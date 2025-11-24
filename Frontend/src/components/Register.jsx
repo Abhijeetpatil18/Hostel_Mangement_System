@@ -40,13 +40,15 @@ export default function Register() {
         email,
         password,
       });
+      localStorage.setItem("token", data.token);
+
       console.log(res);
       if (res.data?.success) {
         alert(
           `✅ Registration Successful!\n\nUsername: ${username}\nEmail: ${email}`
         );
         setFormData({ username: "", email: "", password: "" });
-        navigate("/login");
+        navigate("/");
       } else {
         alert(res.data?.message || "Registration failed");
       }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "../Login.module.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, Bounce } from "react-toastify";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -33,12 +34,22 @@ export default function Login() {
       // success path...
       console.log(res);
       if (res.data && res.data.success) {
-        alert(`Login Success "${res.data.name}"`);
         setFormData({
           email: "",
           password: "",
         });
-        navigate("/");
+        toast.success(`Login success`, {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        navigate("/app");
       }
     } catch (err) {
       if (err.response) {

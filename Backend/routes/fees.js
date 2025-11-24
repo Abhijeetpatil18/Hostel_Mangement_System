@@ -5,7 +5,8 @@ const db = require("../db")
 
 router.get('/fees', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM fees');
+    const query = 'select s.name,f.amount,f.status from students s join fees f where  s.student_id = f.student_id'
+    const [rows] = await db.query(query);
     res.json(rows);
   } catch (err) {
     console.error(err);
@@ -13,19 +14,7 @@ router.get('/fees', async (req, res) => {
   }
 });
 
-router.get('/fees/:id', async (req, res) => {
-    const id = +req.params.id
-    // console.log(req.params)
-    try {
-        const [rows] = await db.query('SELECT * FROM fees');
-        const student = rows.find((student) => student.student_id === id);
-        console.log(student);
-        res.send(student)
-    } catch (error) {
-        console.log(error)
-        res.status(404).send("student not found")
-    }
-});
+
 
 
 

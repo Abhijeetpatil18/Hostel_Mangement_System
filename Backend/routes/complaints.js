@@ -11,7 +11,7 @@ router.get('/complaints', async (req, res) => {
       JOIN students s ON c.student_id = s.student_id
     `;
     const rows = await db.query(query);
-    console.log(rows[0])
+    // console.log(rows[0])
     res.json(rows[0]);
   } catch (err) {
     console.error(err);
@@ -38,7 +38,7 @@ router.post('/complaints', async (req, res) => {
   try {
     // Send data to DB with parameters
     const result = await db.query(query, [studentID, description, status]);
-    console.log(result);
+    // console.log(result);
     res.status(200).send("Successfully inserted");
   } catch (error) {
     console.log(error);

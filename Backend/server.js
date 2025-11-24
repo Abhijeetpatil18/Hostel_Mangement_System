@@ -9,6 +9,7 @@ const roomRoutes = require('./routes/rooms')
 const complaintRoutes = require('./routes/complaints')
 const stsffRoutes = require("./routes/Staff")
 const feesRoutes = require('./routes/fees')
+const jwt = require("jsonwebtoken")
 
 const app = express();
 app.use(cors());
@@ -16,12 +17,29 @@ app.use(bodyParser.json());
 
 
 
+const auth = ((req,res,next)=>{
+    try {
+  const authHeader = req.headers.authorization;
+    // console.log(header)
+    const token = header.split("Bearer ")[1]
+    var decoded = jwt.verify(authHeader, process.env.SECRET);
+    req.user = decoded;
+    console.log(decoded)
+    next();
+    } catch (error) {
+        res.status(401).send("Unauthorized")
+    }
+         
+
+}
+)
 
 
 // user Routes
 app.use("/",userRoutes);
 app.use("/api/",studentsRoutes)
 app.use("/api/",roomRoutes)
+app.use("/api/",feesRoutes)
 app.use("/",complaintRoutes)
 app.use("/",stsffRoutes)
 app.use('/students',feesRoutes)

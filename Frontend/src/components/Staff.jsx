@@ -36,10 +36,8 @@ function Staff() {
                     <h2 className="text-sm font-semibold text-slate-900">
                       {name}
                     </h2>
-                    <p className="text-base font-medium text-slate-900 truncate">
-                      ID : {staff_id}
-                    </p>
-                    <p className="text-sm text-slate-600 truncate">
+                    <p className="text-base font-medium text-slate-900 truncate"></p>
+                    <p className="text-sm text-slate-900 truncate text-xl">
                       {position}
                     </p>
                   </div>
@@ -75,8 +73,8 @@ function Staff() {
                 </div>
 
                 {/* Body */}
-                <div className="mt-3 space-y-1.5 text-sm">
-                  <p className="text-slate-700">
+                <div className="mt-3 space-y-1.5 text-md">
+                  <p className="text-slate-900 font-medium">
                     Contact: <span className="font-medium">{contact_no}</span>
                   </p>
                 </div>

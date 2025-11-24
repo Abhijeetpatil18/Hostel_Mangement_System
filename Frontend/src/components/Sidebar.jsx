@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const location = useLocation();
-  const [btn, setBtn] = useState("");
+  const [btn, setBtn] = useState("Home");
 
   const handleBtnClick = (btn) => setBtn(btn);
 
@@ -17,14 +17,14 @@ const Sidebar = () => {
         
         d-flex flex-column 
         p-3 bg-dark text-white
-        h-full   /* full viewport height */
+        h-10/12   /* full viewport height */
         border-end 
            /* right border */
         
            
       "
       style={{
-        width: "230px",
+        width: "260px",
       }}
       data-bs-theme="dark"
     >
@@ -32,9 +32,9 @@ const Sidebar = () => {
       <ul className="nav nav-pills flex-column mb-auto gap-2 ">
         <li className="nav-item">
           <Link
-            to="/"
+            to="/app"
             className={`nav-link d-flex align-items-center ${
-              isActive("/", "Home") ? "active" : "text-white"
+              isActive("/app", "Home") ? "active" : "text-white"
             }`}
             onClick={() => handleBtnClick("Home")}
             aria-current={isActive("/", "Home") ? "page" : undefined}
@@ -47,15 +47,15 @@ const Sidebar = () => {
             >
               <use xlinkHref="#home" />
             </svg>
-            <span>Home</span>
+            <span className="text-lg">Home</span>
           </Link>
         </li>
 
         <li className="nav-item">
           <Link
-            to="/students"
+            to="students"
             className={`nav-link d-flex align-items-center ${
-              isActive("/students", "Students") ? "active" : "text-white"
+              isActive("students", "Students") ? "active" : "text-white"
             }`}
             onClick={() => handleBtnClick("Students")}
           >
@@ -67,15 +67,15 @@ const Sidebar = () => {
             >
               <use xlinkHref="#speedometer2" />
             </svg>
-            <span>Students</span>
+            <span className="text-lg">Students</span>
           </Link>
         </li>
 
         <li className="nav-item">
           <Link
-            to="/rooms" /* make path lower-case consistently */
+            to="rooms" /* make path lower-case consistently */
             className={`nav-link d-flex align-items-center ${
-              isActive("/rooms", "Rooms") ? "active" : "text-white"
+              isActive("rooms", "Rooms") ? "active" : "text-white"
             }`}
             onClick={() => handleBtnClick("Rooms")}
           >
@@ -87,13 +87,32 @@ const Sidebar = () => {
             >
               <use xlinkHref="#table" />
             </svg>
-            <span>Rooms</span>
+            <span className="text-lg">Rooms</span>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            to="/app/fees" /* make path lower-case consistently */
+            className={`nav-link d-flex align-items-center ${
+              isActive("/app/fees", "fees") ? "active" : "text-white"
+            }`}
+            onClick={() => handleBtnClick("Fees")}
+          >
+            <svg
+              className="bi pe-none me-2"
+              width="16"
+              height="16"
+              aria-hidden="true"
+            >
+              <use xlinkHref="#table" />
+            </svg>
+            <span className="text-lg">Fees</span>
           </Link>
         </li>
 
         <li className="nav-item">
           <Link
-            to="/complaints"
+            to="/app/complaints"
             className={`nav-link d-flex align-items-center ${
               isActive("/complaints", "Complaints") ? "active" : "text-white"
             }`}
@@ -107,13 +126,13 @@ const Sidebar = () => {
             >
               <use xlinkHref="#grid" />
             </svg>
-            <span>Complaints</span>
+            <span className="text-lg">Complaints</span>
           </Link>
         </li>
 
         <li className="nav-item">
           <Link
-            to="/staff"
+            to="/app/staff"
             className={`nav-link d-flex align-items-center ${
               isActive("/staff", "Staff") ? "active" : "text-white"
             }`}
@@ -127,7 +146,7 @@ const Sidebar = () => {
             >
               <use xlinkHref="#people-circle" />
             </svg>
-            <span>Staff</span>
+            <span className="text-lg">Staff</span>
           </Link>
         </li>
       </ul>
@@ -148,7 +167,7 @@ const Sidebar = () => {
             height="32"
             className="rounded-circle me-2"
           />
-          <strong>mdo</strong>
+          <strong>Abhijeet</strong>
         </a>
 
         <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -157,11 +176,11 @@ const Sidebar = () => {
               New project...
             </a>
           </li>
-          <li>
+          {/* <li>
             <a className="dropdown-item" href="#">
               Settings
             </a>
-          </li>
+          </li> */}
           <li>
             <Link to="/profile" className="dropdown-item">
               Profile
@@ -172,7 +191,7 @@ const Sidebar = () => {
           </li>
           <li>
             <Link
-              to="/"
+              to="/register"
               className="dropdown-item"
               onClick={() => handleBtnClick("Home")}
             >

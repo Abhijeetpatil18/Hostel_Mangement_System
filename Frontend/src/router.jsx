@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Register from "./components/Register";
 import App from "./App";
 import Login from "./components/Login";
@@ -8,10 +8,15 @@ import Rooms from "./components/Rooms";
 import Complaints from "./components/Complaints";
 import Staff from "./components/Staff";
 import Home from "./components/Home";
+import Fees from "./components/Fees";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Navigate to="/login" replace />,
+  },
+  {
+    path: "/app",
     element: <App />,
     errorElement: <div>Oops! Something went wrong.</div>, // Optional: for error handling,
     children: [
@@ -20,27 +25,31 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/profile",
+        path: "profile",
         element: <Profile />,
       },
       {
-        path: "/students",
+        path: "students",
         element: <Students />,
       },
       {
-        path: "/rooms",
+        path: "rooms",
         element: <Rooms />,
       },
       {
-        path: "/complaints",
+        path: "complaints",
         element: <Complaints />,
       },
       {
-        path: "/staff",
+        path: "staff",
         element: <Staff />,
       },
       {
-        path: "/complaints",
+        path: "fees",
+        element: <Fees />,
+      },
+      {
+        path: "complaints",
         element: <Complaints />,
       },
     ],

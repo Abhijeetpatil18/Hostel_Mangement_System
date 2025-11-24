@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <header
-      className="sticky top-0 z-50 border-b border-slate-200/80 backdrop-blur-md bg-gradient-to-r f"
+      className="sticky top-0 z-50 border-b h-17 border-slate-200/80 backdrop-blur-md bg-gradient-to-r f"
       style={{
         backgroundColor: "black",
       }}

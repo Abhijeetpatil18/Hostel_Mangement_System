@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { toast, Bounce } from "react-toastify";
 import axios from "axios";
 
 function Complaints() {
@@ -38,6 +39,17 @@ function Complaints() {
       close();
       setForm({ studentID: "", description: "" });
       await fetchComplaints();
+      toast.success(`Complaint Registered`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -95,11 +107,11 @@ function Complaints() {
           ({ Complaint_id, student_name, description, status }) => (
             <article
               key={Complaint_id}
-              className="bg-orange-100 border border-slate-200 rounded-xl p-2 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-yellow-100 border border-slate-200 rounded-xl p-2 shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-lg font-semibold text-slate-900">
+                  <p className="text-lg font-semibold text-black">
                     {Complaint_id}
                   </p>
                 </div>
@@ -112,7 +124,7 @@ function Complaints() {
                       ? "bg-amber-50 text-amber-700 border border-amber-200"
                       : status === "Resolved"
                       ? "bg-sky-50 text-sky-700 border border-sky-200"
-                      : "bg-slate-50 text-slate-700 border border-slate-200")
+                      : "bg-slate-50 text-black border border-slate-200")
                   }
                 >
                   <span
@@ -133,23 +145,23 @@ function Complaints() {
 
               <div className="mt-3 text-sm text-slate-600">
                 <div className="flex items-center gap-2">
-                  <span className="text-slate-900 text-xl">Student Name:</span>
-                  <span className="text-slate-900 italic font-bold">
-                    {student_name}
-                  </span>
+                  <span className="text-black text-md">Student Name:</span>
+                  <span className="text-black  font-bold">{student_name}</span>
                 </div>
               </div>
 
-              <p className="mt-3 text-slate-700 line-clamp-3">{description}</p>
+              <p className="mt-3 text-black line-clamp-3 text-xl">
+                Description : {description}
+              </p>
 
               <div className="mt-4 flex items-center justify-between">
-                <button className="text-slate-600 hover:text-slate-900 text-sm underline underline-offset-4">
+                {/* <button className="text-slate-600 hover:text-black text-sm underline underline-offset-4">
                   View details
-                </button>
+                </button> */}
 
                 {/* Update dropdown */}
                 <div className="relative">
-                  <button
+                  {/* <button
                     type="button"
                     className="px-3 py-1.5 text-sm rounded-lg bg-slate-900 text-white hover:bg-slate-800 inline-flex items-center gap-1"
                     aria-haspopup="menu"
@@ -175,7 +187,7 @@ function Complaints() {
                         strokeWidth="2"
                       />
                     </svg>
-                  </button>
+                  </button> */}
 
                   {openMenuId === Complaint_id && (
                     <div

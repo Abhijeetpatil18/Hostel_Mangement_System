@@ -89,9 +89,10 @@ function Rooms() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className=" items-center justify-end gap-2">
                         <button
-                          className="px-3 py-1.5 text-sm rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100"
+                          type="button"
+                          className="btn btn-outline-primary "
                           onClick={() => handleDetails(r)}
                         >
                           Details
@@ -115,7 +116,7 @@ export function RoomDetailsModal({ room, onClose }) {
   const dialogRef = useRef(null);
   const [details, setDetails] = useState({
     room_id: "",
-    capacity: "",
+    available: "",
     students: [],
   });
 
@@ -131,7 +132,7 @@ export function RoomDetailsModal({ room, onClose }) {
           // { room_id, capacity, students: [ { id, name, ... } ] }
           setDetails({
             room_id: data.room_id,
-            capacity: data.capacity,
+            available: data.available,
             students: data.students || [],
           });
         }
@@ -182,8 +183,8 @@ export function RoomDetailsModal({ room, onClose }) {
                 {details.room_id}
               </p>
               <p className="text-sm text-slate-900">
-                <span className="font-semibold">Capacity:</span>{" "}
-                {details.capacity}
+                <span className="font-semibold">Available:</span>{" "}
+                {details.available}
               </p>
             </div>
 

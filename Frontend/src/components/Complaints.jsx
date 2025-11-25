@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { toast, Bounce } from "react-toastify";
+import { AiFillDelete } from "react-icons/ai";
 import axios from "axios";
 
 function Complaints() {
@@ -55,6 +56,42 @@ function Complaints() {
     }
   };
 
+  const deleteComplaint = async (Complaint_id) => {
+    // console.log(Complaint_id);
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:5000/complaints/${Complaint_id}`
+      );
+      // Consider using data.success based on your backend response structure
+      if (data.success) {
+        toast.success(`Deleted successfully`, {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        await fetchComplaints();
+      }
+    } catch (error) {
+      toast.error("Failed to delete", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
   // NEW: close dropdown on outside click and Escape
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && setOpenMenuId(null);
@@ -86,7 +123,7 @@ function Complaints() {
     <div ref={rootRef}>
       <div>
         <div className="row w-250">
-          <div className="col-10 text-center text-2xl rounded-2xl bg-orange-50">
+          <div className="col-10 text-center text-2xl text-slate-950 font-serif rounded-2xl bg-orange-50">
             Complaints
           </div>
           <div className="col-2 ">
@@ -104,38 +141,36 @@ function Complaints() {
 
       <div className="grid gap-4 sm:grid-cols-2 ">
         {complaints.map(
-          ({ Complaint_id, student_name, description, status }) => (
+          ({ complaint_id, student_name, description, status }) => (
             <article
-              key={Complaint_id}
+              key={complaint_id}
               className="bg-yellow-100 border border-slate-200 rounded-xl p-2 shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-lg font-semibold text-black">
-                    {Complaint_id}
-                  </p>
+                  <p className="text-lg font-semibold text-black"></p>
                 </div>
                 <span
                   className={
                     "inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium " +
                     (status === "Open"
-                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      ? "bg-emerald-50 text-red-700 border border-emerald-200"
                       : status === "In Progress"
-                      ? "bg-amber-50 text-amber-700 border border-amber-200"
+                      ? "bg-amber-50 text-red-700 border border-amber-200"
                       : status === "Resolved"
-                      ? "bg-sky-50 text-sky-700 border border-sky-200"
+                      ? "bg-sky-50 text-blue-700 border border-sky-200"
                       : "bg-slate-50 text-black border border-slate-200")
                   }
                 >
                   <span
                     className={
                       "h-1.5 w-1.5 rounded-full " +
-                      (status === "Open"
-                        ? "bg-emerald-500"
+                      (status === "Resolved"
+                        ? "bg-blue-500"
                         : status === "In Progress"
                         ? "bg-amber-500"
-                        : status === "Resolved"
-                        ? "bg-sky-500"
+                        : status === "Open"
+                        ? "bg-red-500"
                         : "bg-slate-400")
                     }
                   />
@@ -145,8 +180,10 @@ function Complaints() {
 
               <div className="mt-3 text-sm text-slate-600">
                 <div className="flex items-center gap-2">
-                  <span className="text-black text-md">Student Name:</span>
-                  <span className="text-black  font-bold">{student_name}</span>
+                  <span className="text-black text-lg">Student Name:</span>
+                  <span className="text-black  text-lg font-bold">
+                    {student_name}
+                  </span>
                 </div>
               </div>
 
@@ -188,8 +225,11 @@ function Complaints() {
                       />
                     </svg>
                   </button> */}
-
-                  {openMenuId === Complaint_id && (
+                  <AiFillDelete
+                    onClick={() => deleteComplaint(complaint_id)}
+                    className="size-5 right-0"
+                  />
+                  {openMenuId === complaint_id && (
                     <div
                       id={`update-menu-${Complaint_id}`}
                       role="menu"

@@ -46,6 +46,22 @@ router.post('/complaints', async (req, res) => {
   }
 });
 
+router.delete('/complaints/:id',async (req,res) => {
+    const id = req.params.id;
+    const query = `Delete from complaints where complaint_id = ?`;
+    try {
+      const [rows] =await db.execute(query,[id]);
+      console.log(rows)
+      res.status(200).json({
+        success:true,
+        message:"Deletion successfull"
+      })
+      
+    } catch (error) {
+      console.log(error.message)
+      res.status(500).send("Error in deletion")
+    }
+})
 
 
 

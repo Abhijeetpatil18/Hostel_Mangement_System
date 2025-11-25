@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "../Register.module.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, Bounce } from "react-toastify";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -40,15 +41,22 @@ export default function Register() {
         email,
         password,
       });
-      localStorage.setItem("token", data.token);
 
       console.log(res);
       if (res.data?.success) {
-        alert(
-          `✅ Registration Successful!\n\nUsername: ${username}\nEmail: ${email}`
-        );
+        toast.success(`Registartion successfull`, {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
         setFormData({ username: "", email: "", password: "" });
-        navigate("/");
+        navigate("/login");
       } else {
         alert(res.data?.message || "Registration failed");
       }

@@ -1,22 +1,37 @@
 // fees.jsx
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { BiArchiveIn } from "react-icons/bi";
 
 function fees() {
   const [fees, setfees] = useState([]);
   const [openRoom, setOpenRoom] = useState(null); // selected room for modal
 
   useEffect(() => {
-    const fetchfees = async () => {
-      try {
-        const { data } = await axios.get("http://localhost:5000/api/fees");
-        setfees(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
     fetchfees();
   }, []);
+  const fetchfees = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:5000/api/fees");
+      setfees(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const updateFees = async (fees_id, status) => {
+    try {
+      const { data } = await axios.put(
+        `http://localhost:5000/api/fees/${fees_id}`,
+        { status }
+      );
+      if (data.success) {
+        await fetchfees();
+        console.log("updated");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleDetails = (room) => setOpenRoom(room);
   const close = () => setOpenRoom(null);
@@ -45,6 +60,9 @@ function fees() {
                   <th className="sticky top-0 z-10 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-black text-right">
                     Status
                   </th>
+                  <th className="sticky top-0 z-10 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-black text-right">
+                    Update
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-300">
@@ -58,41 +76,42 @@ function fees() {
                     <td className="px-4 py-3">
                       <span className="text-slate-700">{r.amount}</span>
                     </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={
-                          "inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium border " +
-                          (r.status === "Available"
-                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                            : r.status === "Occupied"
-                            ? "bg-rose-50 text-rose-700 border-rose-200"
-                            : "bg-slate-50 text-slate-700 border-slate-200")
-                        }
-                      >
-                        <span
-                          aria-hidden="true"
-                          className={
-                            "h-1.5 w-1.5 rounded-full " +
-                            (r.status === "Available"
-                              ? "bg-emerald-500"
-                              : r.status === "Occupied"
-                              ? "bg-rose-500"
-                              : "bg-slate-400")
-                          }
-                        />
-                        {r.status}
-                      </span>
-                    </td>
-                    {/* <td className="px-4 py-3"> */}
-                    {/* <div className="flex items-center justify-end gap-2">
+                    <td className="px-4 py-3">{r.status}</td>
+                    <td className="px-2 py-3 divide-slate-300">
+                      <div className="btn-group">
                         <button
-                          className="px-3 py-1.5 text-sm rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100"
-                          onClick={() => handleDetails(r)}
+                          type="button"
+                          className="btn btn-outline-primary dropdown-toggle px-2 py-1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
                         >
-                          Details
+                          Status
                         </button>
-                      </div> */}
-                    {/* </td> */}
+                        <ul className="dropdown-menu">
+                          {r.status === "Paid" ? (
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                onClick={() => updateFees(r.fee_id, "Pending")}
+                              >
+                                Pending{" "}
+                              </a>
+                            </li>
+                          ) : (
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                href="#"
+                                onClick={() => updateFees(r.fee_id, "Paid")}
+                              >
+                                Paid
+                              </a>
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>

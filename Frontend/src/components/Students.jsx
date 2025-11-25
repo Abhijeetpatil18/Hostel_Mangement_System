@@ -79,7 +79,9 @@ function Students() {
         <div className="bg-slate-200  border border-slate-700 rounded-xl shadow-sm overflow-hidden">
           <div class="container text-center">
             <div className="row align-items-start py-2">
-              <div className="col-10 text-2xl">Students</div>
+              <div className="col-10 text-3xl font-semibold text-slate-900">
+                Students
+              </div>
 
               <div class="col-2">
                 <button
@@ -549,7 +551,7 @@ export function ProfileModal({ data, onClose }) {
 
         <footer className="flex justify-end gap-3 p-2 border-t">
           <button
-            className="rounded-md px-4 py-2 text-slate-700 hover:bg-slate-100"
+            className="rounded-[10px] px-4 py-2 text-white bg-slate-600 "
             onClick={onClose}
           >
             Close

@@ -61,8 +61,8 @@ const userRegister =async (req, res) => {
 
     // 3) insert user
     const [result] = await db.execute(
-      "INSERT INTO users (name, email, password, jwt_token) VALUES (?,?,?,?)",
-      [uname, mail, password,token] // replace with hashed
+      "INSERT INTO users (name, email, password) VALUES (?,?,?)",
+      [uname, mail, password] // replace with hashed
     );
 
     return res.status(201).json({

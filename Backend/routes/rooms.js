@@ -38,16 +38,23 @@ router.get("/rooms/:id", async (req, res) => {
        WHERE room_id = ?`,
       [id]
     );
-    const availble = room.capacity - studentRows.length;
-    console.log(availble)
+        const [countStudents] = await db.query(
+      `SELECT room_id, COUNT(*) AS No_of_students
+      FROM students
+      WHERE room_id = ?
+      GROUP BY room_id`,
+      [id]
+    );
+
+    const available = room.capacity - studentRows.length;
+    console.log(available)
 
     // 3️⃣ Build final response
     const response = {
       room_id: room.room_id,
       name: room.name,
-      capacity: room.capacity,
       students: studentRows,
-      availble:availble
+      available:available
     };
 
     res.json(response);

@@ -14,7 +14,7 @@ function Navbar() {
           backgroundColor: "black",
         }}
       >
-        <div className="h-14 flex items-center justify-between">
+        <div className="h-14 flex items-center justify-between pt-2">
           {/* Left: App name */}
           <a
             href="/"
@@ -36,21 +36,15 @@ function Navbar() {
           <div className="flex items-center gap-2">
             <a
               href="/login"
-              className="px-3 py-1 text-lg  rounded-lg border border-slate-200/80 text-slate-700 hover:bg-white/60 backdrop-blur-sm transition-colors"
-              style={{
-                textDecoration: "none",
-                backgroundColor: "white",
-              }}
+              className="px-3 py-1 text-lg font-semibold rounded-lg border border-gray-300 text-gray-700 bg-white shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-colors duration-200"
+              style={{ textDecoration: "none" }}
             >
               Log out
             </a>
             <Link
               to="/register"
-              className="px-3 py-1 text-lg  rounded-lg border border-slate-200/80 text-slate-700 hover:bg-white/60 backdrop-blur-sm transition-colors"
-              style={{
-                textDecoration: "none",
-                backgroundColor: "white",
-              }}
+              className="px-3 py-1 text-lg font-semibold rounded-lg border border-indigo-500 text-indigo-600 bg-white shadow-sm hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200"
+              style={{ textDecoration: "none" }}
             >
               Sign up
             </Link>

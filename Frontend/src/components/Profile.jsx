@@ -25,7 +25,7 @@ const ProfileCard = () => {
     <div className="profile-card-wrapper">
       <div className="profile-card">
         <h2 className="profile-card-title">Profile Details</h2>
-        {/* <p>{details}</p> */}
+
         <div className="profile-card-item">
           <strong>name</strong> <span>{details.name}</span>
         </div>

@@ -179,7 +179,7 @@ export function RoomDetailsModal({ room, onClose }) {
 
             <div className="mb-4">
               <p className="text-sm text-slate-900">
-                <span className="font-semibold">Room ID:</span>{" "}
+                <span className="font-semibold">Room No:</span>{" "}
                 {details.room_id}
               </p>
               <p className="text-sm text-slate-900">

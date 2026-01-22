@@ -11,10 +11,10 @@ import Home from "./components/Home";
 import Fees from "./components/Fees";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Navigate to="/login" replace />,
-  },
+  // {
+  //   path: "/",
+  //   element: <Navigate to="/login" replace />,
+  // },
   {
     path: "/app",
     element: <App />,

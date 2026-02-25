@@ -1,71 +1,16 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require("../db")
+const db = require("../db");
+const {
+  getAllComplaints,
+  createComplaint,
+  deleteComplaint,
+} = require("../controllers/complaints");
 
+router.get("/complaints", getAllComplaints);
 
-router.get('/complaints', async (req, res) => {
-  try {
-    const query = `
-      SELECT c.*, s.name AS student_name
-      FROM complaints c
-      JOIN students s ON c.student_id = s.student_id
-    `;
-    const rows = await db.query(query);
-    // console.log(rows[0])
-    res.json(rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Database error');
-  }
-});
+router.post("/complaints", createComplaint);
 
-// Make sure you have: const express = require('express'); const router = express.Router();
-// And that db is a configured database connection with promise support.
+router.delete("/complaints/:id", deleteComplaint);
 
-router.post('/complaints', async (req, res) => {
-  // Read values from incoming request
-  const { studentID, description } = req.body;
-
-  // Set a default status if not provided (optional, e.g., "Open")
-  const status = "Open";
-
-  // Use your DB query insert (adjust table/columns as needed)
-  const query = `
-    INSERT INTO Complaints (student_id, description, status)
-    VALUES (?, ?, ?)
-  `;
-
-  try {
-    // Send data to DB with parameters
-    const result = await db.query(query, [studentID, description, status]);
-    // console.log(result);
-    res.status(200).send("Successfully inserted");
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Error in insert");
-  }
-});
-
-router.delete('/complaints/:id',async (req,res) => {
-    const id = req.params.id;
-    const query = `Delete from complaints where complaint_id = ?`;
-    try {
-      const [rows] =await db.execute(query,[id]);
-      console.log(rows)
-      res.status(200).json({
-        success:true,
-        message:"Deletion successfull"
-      })
-      
-    } catch (error) {
-      console.log(error.message)
-      res.status(500).send("Error in deletion")
-    }
-})
-
-
-
-
-
-
-module.exports = router
+module.exports = router;
